@@ -66,7 +66,7 @@ function setupScroll() {
   const shots13 = [['c01','Nodmax'],['c02','Harbor Guard'],['c03','Nightowl'],['c04','Galaxy India'],['c05','Nodmax'],['c06','Harbor Guard'],['c07','Nightowl'],['c08','Galaxy India'],['c09','Nodmax'],['c10','Concept'],['c11','Nodmax'],['c12','Nightowl'],['c13','Galaxy India']];
   const cardsEl = $('#cards');
   shots13.forEach(([f, n]) => { const d = document.createElement('div'); d.className = 'card';
-    d.innerHTML = `<img src="assets/cards/${f}.jpg" alt="${n} website design" draggable="false"><em>${n}</em>`; cardsEl.append(d); });
+    d.innerHTML = `<img src="${f}.jpg" alt="${n} website design" draggable="false"><em>${n}</em>`; cardsEl.append(d); });
   const cards = $$('.card');
   const W = innerWidth, H = innerHeight;
   const dirs = [[1.3,.7],[-1.5,1],[1.1,-1.3],[-1.7,-.8],[.8,1.5],[-1,-1.4],[1.6,.3],[-.7,1.7],[1.2,-1.6],[-1.4,.9],[1.8,-.5],[-1.1,-1.8],[.9,1.8]];
@@ -172,7 +172,7 @@ function setupScroll() {
 }
 
 /* ---------- realistic laptop scenes ----------
-   If assets/scenes/<name>.jpg contains a laptop whose screen is solid chroma green (#00FF00),
+   If <name>.jpg contains a laptop whose screen is solid chroma green (#00FF00),
    we find the four screen corners and warp the design into it with matrix3d (true perspective).
    No green screen found -> the flat, front-on mockup stays. */
 function solve8(A, b) { // gaussian elimination
@@ -241,7 +241,7 @@ $('#ttrack').innerHTML = [...clients, ...clients, ...clients, ...clients, ...cli
 /* corner card: a one-by-one swipe carousel of the four case studies */
 const tiles = [['nodmax', 'Nodmax'], ['concept', 'Concept'], ['harbor', 'Harbor Guard'], ['galaxy', 'Galaxy India']];
 const ccol = $('#ccol');
-ccol.innerHTML = [...tiles, tiles[0]].map(([n]) => `<div style="background-image:url(assets/thumbs/${n}-l.jpg)"></div>`).join('');
+ccol.innerHTML = [...tiles, tiles[0]].map(([n]) => `<div style="background-image:url(${n}-l.jpg)"></div>`).join('');
 $('#cdots').innerHTML = tiles.map(() => '<i></i>').join('');
 let ci = 0;
 const showCard = i => { $$('#cdots i').forEach((d, k) => d.classList.toggle('on', k === i)); $('#cname').textContent = tiles[i][1]; };
@@ -258,7 +258,7 @@ $('#corner').addEventListener('click', () => {
   if (document.body.classList.contains('is-loading')) return;
   const el = $('#corner'), r = el.getBoundingClientRect();
   const z = document.createElement('div'); z.className = 'zoomclone';
-  z.style.backgroundImage = 'url(assets/thumbs/nodmax-l.jpg)'; // first case study, like the first slide
+  z.style.backgroundImage = 'url(nodmax-l.jpg)'; // first case study, like the first slide
   Object.assign(z.style, { left: r.left + 'px', top: r.top + 'px', width: r.width + 'px', height: r.height + 'px', borderRadius: '12px' });
   document.body.append(z);
   lenis.stop();
