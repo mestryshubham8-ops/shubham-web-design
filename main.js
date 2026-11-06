@@ -12,7 +12,10 @@ gsap.ticker.lagSmoothing(0);
 lenis.stop();
 $$('a[href^="#"]').forEach(a => a.addEventListener('click', e => {
   const id = a.getAttribute('href');
-  if (id.length > 1 && $(id)) { e.preventDefault(); lenis.scrollTo(id, { duration: 1.6 }); }
+  if (id.length > 1 && $(id)) { e.preventDefault();
+    /* the contact screen is pinned behind the page, so "Contact" scrolls to the very bottom, where it is fully revealed */
+    if (id === '#contact') lenis.scrollTo(document.documentElement.scrollHeight - innerHeight, { duration: 2.4 });
+    else lenis.scrollTo(id, { duration: 1.6 }); }
 }));
 
 /* ---------- 1. LOADER ---------- */
@@ -63,7 +66,7 @@ function setupScroll() {
   lenis.on('scroll', () => track(lx, ly));
 
   /* 3. fly-through: cards fly toward the camera, rings orbit */
-  const shots13 = [['c01','Nodmax'],['c02','Harbor Guard'],['c03','Nightowl'],['c04','Galaxy India'],['c05','Nodmax'],['c06','Harbor Guard'],['c07','Nightowl'],['c08','Galaxy India'],['c09','Nodmax'],['c10','Concept'],['c11','Nodmax'],['c12','Nightowl'],['c13','Galaxy India']];
+  const shots13 = [['c01','Nodmax'],['c02','Harbor Guard'],['c03','Nightowl'],['c04','Galaxy India'],['c05','Nodmax'],['c06','Harbor Guard'],['c07','Nightowl'],['c08','Galaxy India'],['c09','Nodmax'],['c11','Nodmax'],['c12','Nightowl'],['c13','Galaxy India']];
   const cardsEl = $('#cards');
   shots13.forEach(([f, n]) => { const d = document.createElement('div'); d.className = 'card';
     d.innerHTML = `<img src="${f}.jpg" alt="${n} website design" draggable="false"><em>${n}</em>`; cardsEl.append(d); });
@@ -239,7 +242,7 @@ initScenes();
 const clients = ['Harbor Guard', 'Nodmax', 'Nightowl Tech', 'Uplift Digital', 'DTPX', 'Weber Shandwick']; // swap for logo <img>s later
 $('#ttrack').innerHTML = [...clients, ...clients, ...clients, ...clients, ...clients, ...clients, ...clients, ...clients].map(c => `<b>${c}</b>`).join('');
 /* corner card: a one-by-one swipe carousel of the four case studies */
-const tiles = [['nodmax', 'Nodmax'], ['concept', 'Concept'], ['harbor', 'Harbor Guard'], ['galaxy', 'Galaxy India']];
+const tiles = [['nodmax', 'Nodmax'], ['concept', 'Concept'], ['harbor', 'Harbor Guard']];
 const ccol = $('#ccol');
 ccol.innerHTML = [...tiles, tiles[0]].map(([n]) => `<div style="background-image:url(${n}-l.jpg)"></div>`).join('');
 $('#cdots').innerHTML = tiles.map(() => '<i></i>').join('');
@@ -266,6 +269,15 @@ $('#corner').addEventListener('click', () => {
     .to(z, { left: 0, top: 0, width: '100vw', height: '100vh', borderRadius: 0, duration: 1.1, ease: 'expo.inOut' })
     .add(() => { lenis.scrollTo('#works', { immediate: true, force: true }); ScrollTrigger.update(); })
     .to(z, { opacity: 0, duration: .7, ease: 'power2.out' }, '+=0.15');
+});
+
+/* copy-email button */
+$('#ccopy').addEventListener('click', async () => {
+  const b = $('#ccopy'), email = b.dataset.email;
+  try { await navigator.clipboard.writeText(email); }
+  catch (e) { const t = document.createElement('textarea'); t.value = email; document.body.append(t); t.select(); document.execCommand('copy'); t.remove(); }
+  b.classList.add('done'); $('.ctip', b).textContent = 'Copied ✓';
+  setTimeout(() => { b.classList.remove('done'); $('.ctip', b).textContent = 'Copy'; }, 1800);
 });
 
 runLoader();
